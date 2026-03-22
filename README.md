@@ -12,7 +12,7 @@ A minimal local-network web app for submitting and tracking media download reque
 ## Stack
 
 - **Flask + Gunicorn** — web app (Python 3.12-slim image)
-- **dnsmasq** — resolves `http://torrentreq.bug` on the local network (Alpine image)
+- **dnsmasq** — resolves `http://torrentreq.bug` on the local network — runs as a separate container, see [local_dnsmasq](https://github.com/JesseBourret-Gheysen/local_dnsmasq)
 
 ---
 
@@ -32,22 +32,11 @@ sudo /home/jesse/docker/start-all.sh
 
 The data directory `/home/jesse/docker/torrentreq/data/` is created automatically on first run.
 
-### 2. Configure your router's DNS
+### 2. Set up local DNS (optional)
 
-For `http://torrentreq.bug` to resolve on all local devices, point your router's **primary DNS server** to this server's LAN IP.
+For `http://torrentreq.bug` to resolve on all local devices, deploy the companion [local_dnsmasq](https://github.com/JesseBourret-Gheysen/local_dnsmasq) container and point your router's DNS at this server. Full instructions are in that repo's README.
 
-Find your server IP:
-```bash
-hostname -I
-```
-
-Then in your router admin panel (usually `192.168.1.1`):
-- DNS Server 1: `<your server IP>`
-- DNS Server 2: `8.8.8.8` (fallback)
-
-All DNS queries not matching `torrentreq.bug` are forwarded upstream normally — internet browsing is unaffected.
-
-> **VPN users:** Devices running a VPN will bypass the router DNS and won't resolve `torrentreq.bug`. They can still access the app directly via `http://<server-ip>`.
+Without it, the app is still accessible via direct IP: `http://<server-ip>`.
 
 ### 3. Access
 
