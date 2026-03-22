@@ -6,17 +6,19 @@
   <title>Media Requests</title>
   <style>
     :root {
-      --bg:          #f4f1eb;
-      --surface:     #fdfaf4;
-      --border:      #d6cdb8;
-      --text:        #2d2a22;
-      --muted:       #7a7260;
-      --accent:      #4a7c59;
-      --accent-h:    #3a6347;
-      --accent-soft: #e8f0eb;
-      --leaf-mid:    #7aab8a;
-      --leaf-light:  #b8d4c0;
-      --stone:       #c8bfaa;
+      --bg:           #3d6b4f;
+      --bg-deep:      #2e5c40;
+      --surface:      #fdfaf4;
+      --border-cream: #d6cdb8;
+      --text-light:   #f4f1eb;
+      --text-dark:    #2d2a22;
+      --muted-light:  rgba(244, 241, 235, 0.68);
+      --muted-dark:   #7a7260;
+      --btn:          #2e5c40;
+      --btn-h:        #1e4a2e;
+      --focus-ring:   rgba(46, 92, 64, 0.18);
+      --row-hover:    #f7f4ee;
+      --divider:      #e8e0d0;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,12 +26,9 @@
     body {
       font-family: system-ui, -apple-system, sans-serif;
       background-color: var(--bg);
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M20,30 C18,22 12,18 10,21 C13,25 17,28 20,30Z' fill='%234a7c59' opacity='0.04'/%3E%3Cpath d='M20,30 C22,22 28,19 30,22 C27,26 23,29 20,30Z' fill='%234a7c59' opacity='0.04'/%3E%3Cline x1='20' y1='30' x2='20' y2='12' stroke='%234a7c59' stroke-width='1' opacity='0.04'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      background-size: 40px 40px;
-      color: var(--text);
+      color: var(--text-light);
       min-height: 100vh;
-      padding: 2.5rem 1.25rem;
+      padding: 2.5rem 1.25rem 4rem;
     }
 
     .wrap { max-width: 920px; margin: 0 auto; }
@@ -39,42 +38,37 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 2rem;
+      margin-bottom: 2.25rem;
+      gap: 1.5rem;
     }
-    header h1 {
+    .header-text h1 {
       font-family: Georgia, 'Times New Roman', system-ui, sans-serif;
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       font-weight: 700;
-      color: var(--accent);
+      color: var(--text-light);
+      line-height: 1.2;
     }
-    header p {
-      color: var(--muted);
+    .header-text p {
+      color: var(--muted-light);
       font-size: 0.9rem;
-      margin-top: 0.3rem;
+      margin-top: 0.4rem;
     }
-    .header-branch { flex-shrink: 0; margin-left: 1rem; }
+    .header-plant { flex-shrink: 0; }
 
     /* ── Card ───────────────────────────────────────────────────────────── */
     .card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      border: 1px solid var(--border-cream);
+      border-radius: 16px;
       padding: 1.75rem;
-      margin-bottom: 2.5rem;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 2px 12px rgba(74,124,89,0.07), 0 1px 3px rgba(0,0,0,0.06);
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.1);
     }
     .card h2 {
       font-size: 1rem;
       font-weight: 600;
+      color: var(--text-dark);
       margin-bottom: 1.25rem;
-    }
-    .card-sprig {
-      position: absolute;
-      top: 0;
-      right: 0;
-      pointer-events: none;
     }
 
     /* ── Form ───────────────────────────────────────────────────────────── */
@@ -83,7 +77,6 @@
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
     }
-    .full { grid-column: 1 / -1; }
     .field { display: flex; flex-direction: column; gap: 0.35rem; }
 
     label {
@@ -91,13 +84,13 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.07em;
-      color: var(--muted);
+      color: var(--muted-dark);
     }
     input, select {
       background: var(--surface);
-      border: 1px solid var(--stone);
+      border: 1px solid var(--border-cream);
       border-radius: 8px;
-      color: var(--text);
+      color: var(--text-dark);
       padding: 0.55rem 0.75rem;
       font-size: 0.875rem;
       font-family: inherit;
@@ -106,17 +99,17 @@
       width: 100%;
     }
     input:focus, select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-soft);
+      border-color: var(--btn);
+      box-shadow: 0 0 0 3px var(--focus-ring);
     }
-    select option { background: var(--surface); }
+    select option { background: var(--surface); color: var(--text-dark); }
 
     .actions { display: flex; justify-content: flex-end; margin-top: 1.25rem; }
     button {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: var(--accent);
+      background: var(--btn);
       color: #fff;
       border: none;
       border-radius: 8px;
@@ -127,18 +120,18 @@
       cursor: pointer;
       transition: background 0.15s;
     }
-    button:hover { background: var(--accent-h); }
+    button:hover { background: var(--btn-h); }
 
     /* ── Section title ──────────────────────────────────────────────────── */
     .section-title {
       font-family: Georgia, 'Times New Roman', system-ui, sans-serif;
       font-size: 1rem;
       font-weight: 600;
-      color: var(--text);
+      color: var(--text-light);
       display: inline-block;
-      border-bottom: 2px solid var(--leaf-light);
+      border-bottom: 2px solid rgba(244,241,235,0.35);
       padding-bottom: 0.4rem;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
     }
 
     /* ── Table ──────────────────────────────────────────────────────────── */
@@ -146,20 +139,21 @@
     table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
     th {
       text-align: left;
-      padding: 0.5rem 0.75rem;
+      padding: 0.55rem 0.75rem;
       font-size: 0.72rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.07em;
-      color: var(--muted);
-      border-bottom: 2px solid var(--border);
+      color: var(--muted-dark);
+      border-bottom: 2px solid var(--border-cream);
     }
     td {
       padding: 0.85rem 0.75rem;
-      border-bottom: 1px solid #e8e0d0;
+      border-bottom: 1px solid var(--divider);
       vertical-align: top;
+      color: var(--text-dark);
     }
-    tr:hover td { background: #f7f4ee; }
+    tr:hover td { background: var(--row-hover); }
     tr:last-child td { border-bottom: none; }
 
     /* ── Badges ─────────────────────────────────────────────────────────── */
@@ -183,15 +177,14 @@
       align-items: center;
       gap: 0.75rem;
       padding: 3rem;
-      color: var(--muted);
+      color: var(--muted-dark);
       font-size: 0.9rem;
     }
 
     /* ── Responsive ─────────────────────────────────────────────────────── */
     @media (max-width: 580px) {
       .grid { grid-template-columns: 1fr; }
-      .full { grid-column: 1; }
-      .header-branch { display: none; }
+      .header-plant { display: none; }
     }
   </style>
 </head>
@@ -200,47 +193,37 @@
 
   <!-- Header -->
   <header>
-    <div>
+    <div class="header-text">
       <h1>Media Requests</h1>
       <p>Submit a movie, TV show, or other media request for the local library.</p>
     </div>
-    <!-- Branch illustration -->
-    <svg class="header-branch" width="180" height="80" viewBox="0 0 180 80" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none">
-      <!-- Main branch -->
-      <path d="M178,45 C150,43 125,35 100,38 C80,41 65,30 45,33" stroke="#7aab8a" stroke-width="2" stroke-linecap="round"/>
-      <!-- Leaf pair 1 -->
-      <path d="M155,43 C151,35 144,31 142,34 C145,38 150,42 155,43Z" fill="#b8d4c0"/>
-      <path d="M155,43 C157,35 163,33 165,36 C162,40 158,43 155,43Z" fill="#7aab8a"/>
-      <!-- Leaf pair 2 -->
-      <path d="M118,38 C113,30 106,27 104,30 C107,34 113,37 118,38Z" fill="#b8d4c0"/>
-      <path d="M118,38 C120,30 127,28 129,31 C126,35 121,38 118,38Z" fill="#7aab8a"/>
-      <!-- Leaf pair 3 -->
-      <path d="M78,34 C73,26 66,23 64,26 C67,30 73,33 78,34Z" fill="#b8d4c0"/>
-      <path d="M78,34 C80,26 87,24 89,27 C86,31 81,34 78,34Z" fill="#7aab8a"/>
-      <!-- 5-petal flower at branch tip -->
-      <g transform="translate(45,33)">
-        <ellipse cx="0" cy="-5.5" rx="2.5" ry="4" fill="#e8c9b0"/>
-        <ellipse cx="0" cy="-5.5" rx="2.5" ry="4" fill="#e8c9b0" transform="rotate(72)"/>
-        <ellipse cx="0" cy="-5.5" rx="2.5" ry="4" fill="#e8c9b0" transform="rotate(144)"/>
-        <ellipse cx="0" cy="-5.5" rx="2.5" ry="4" fill="#e8c9b0" transform="rotate(216)"/>
-        <ellipse cx="0" cy="-5.5" rx="2.5" ry="4" fill="#e8c9b0" transform="rotate(288)"/>
-        <circle cx="0" cy="0" r="2.5" fill="#f5d078"/>
-      </g>
+
+    <!--
+      Plant illustration — Potted House Plant by SVG Repo
+      Source: https://www.svgrepo.com/svg/452851/potted-house-plant
+      License: CC Attribution License (https://www.svgrepo.com/page/licensing)
+      Colours adapted for this theme.
+    -->
+    <svg class="header-plant" width="130" height="130" viewBox="0 0 400 400" fill="none"
+         xmlns="http://www.w3.org/2000/svg" aria-label="Potted house plant illustration">
+      <!-- Pot -->
+      <path d="M132.094 229.262C127.676 229.257 124.09 232.835 124.085 237.253C124.08 241.672 127.658 245.257 132.076 245.262L132.094 229.262ZM246.632 240.03L251.335 233.558C251.017 233.327 250.682 233.119 250.334 232.938L246.632 240.03ZM132.084 343.907L126.811 349.923L126.811 349.923L132.084 343.907ZM131.257 256.153C131.831 251.772 128.745 247.756 124.365 247.182C119.984 246.607 115.967 249.694 115.393 254.074L131.257 256.153ZM241.929 246.501C241.629 246.283 242.356 246.77 243.425 249.491C244.385 251.934 245.291 255.321 246.039 259.535C247.529 267.932 248.237 278.708 247.929 289.782C247.621 300.868 246.306 311.877 243.935 320.799C241.436 330.203 238.237 335.465 235.538 337.363L244.743 350.451C252.372 345.085 256.746 334.892 259.398 324.908C262.179 314.443 263.592 302.133 263.923 290.226C264.254 278.308 263.511 266.419 261.793 256.739C260.936 251.913 259.798 247.408 258.316 243.638C256.944 240.146 254.831 236.099 251.335 233.558L241.929 246.501ZM235.538 337.363C231.908 339.916 224.946 342.278 215.224 343.878C205.786 345.431 194.725 346.116 183.743 345.984C172.759 345.852 162.101 344.904 153.472 343.293C149.155 342.487 145.491 341.541 142.615 340.513C139.616 339.441 138.017 338.469 137.357 337.891L126.811 349.923C129.671 352.43 133.444 354.227 137.23 355.58C141.14 356.977 145.676 358.114 150.535 359.021C160.261 360.837 171.864 361.842 183.551 361.983C195.241 362.124 207.263 361.403 217.822 359.665C228.096 357.975 238.045 355.161 244.743 350.451L235.538 337.363ZM137.357 337.891C135.91 336.623 133.966 333.326 132.337 326.984C130.788 320.957 129.816 313.37 129.345 304.996C128.402 288.271 129.509 269.496 131.257 256.153L115.393 254.074C113.537 268.236 112.363 288.02 113.37 305.896C113.873 314.823 114.934 323.547 116.84 330.965C118.665 338.07 121.596 345.353 126.811 349.923L137.357 337.891ZM132.076 245.262C137.516 245.268 146.405 244.843 156.591 244.375C166.903 243.902 178.791 243.371 190.57 243.13C202.376 242.89 213.904 242.945 223.506 243.618C228.308 243.954 232.496 244.437 235.925 245.078C239.461 245.74 241.712 246.486 242.93 247.122L250.334 232.938C247.052 231.225 242.999 230.124 238.867 229.351C234.627 228.558 229.782 228.018 224.625 227.657C214.311 226.934 202.226 226.889 190.244 227.134C178.236 227.379 166.161 227.919 155.857 228.392C145.429 228.871 137.051 229.268 132.094 229.262L132.076 245.262Z"
+            fill="#e8d0b0" fill-opacity="0.95"/>
+      <!-- Lighter stems -->
+      <path d="M200 227C207.288 173.216 262.046 135.441 269 83" stroke="#c8e6d4" stroke-opacity="0.75" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M174.928 231C181.253 205.545 157.22 179.327 164.329 161" stroke="#c8e6d4" stroke-opacity="0.75" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- Main leaves -->
+      <path d="M321 77.1535C216.523 72.7477 273.075 165.304 321 85.318" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M198.277 125.937C300.467 88.895 237.443 216.377 187 130.853" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M286 205.036C260.368 129.453 172.591 193.677 284.382 210" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M165.611 104.912C113.787 149.387 203.085 232.192 167.26 92" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M101.736 195.493C179.378 137.599 213.556 215 79 215" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M244 50.9005C246.594 135.104 322.632 59.0688 245.606 46" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </header>
 
-  <!-- Request form card -->
+  <!-- Request form -->
   <div class="card">
-    <!-- Corner sprig -->
-    <svg class="card-sprig" width="70" height="70" viewBox="0 0 70 70" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none">
-      <path d="M68,2 C55,14 42,28 28,46" stroke="#b8d4c0" stroke-width="1.5" stroke-linecap="round"/>
-      <path d="M54,14 C49,7 42,5 40,8 C44,12 49,14 54,14Z" fill="#d4edda"/>
-      <path d="M54,14 C57,7 63,6 65,9 C62,13 57,15 54,14Z" fill="#b8d4c0"/>
-      <path d="M42,28 C36,21 29,20 27,23 C31,27 37,29 42,28Z" fill="#d4edda"/>
-      <path d="M42,28 C45,21 51,20 53,24 C50,28 44,29 42,28Z" fill="#b8d4c0"/>
-      <path d="M31,42 C25,36 18,36 16,39 C20,43 26,44 31,42Z" fill="#d4edda"/>
-    </svg>
-
     <h2>New Request</h2>
     <form method="POST" action="/submit">
       <div class="grid">
@@ -267,7 +250,6 @@
       </div>
       <div class="actions">
         <button type="submit">
-          <!-- Leaf icon -->
           <svg width="13" height="13" viewBox="0 0 13 13" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
             <path d="M6.5,12 C4,8 1,5 2,2 C4.5,1 8,4 6.5,12Z" fill="white"/>
             <path d="M6.5,12 C9,8 12,6 11,2 C8.5,1 5.5,5 6.5,12Z" fill="rgba(255,255,255,0.55)"/>
@@ -282,54 +264,53 @@
   <div class="section-title">Past Requests</div>
 
   {% if requests %}
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Type</th>
-          <th>Requested By</th>
-          <th>Date</th>
-          <th>Notes</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for r in requests %}
-        <tr>
-          <td>{{ r.title }}</td>
-          <td>{{ r.media_type }}</td>
-          <td>{{ r.requested_by if r.requested_by else '—' }}</td>
-          <td>{{ r.date_requested }}</td>
-          <td>{{ r.notes if r.notes else '—' }}</td>
-          <td>
-            <span class="badge s-{{ r.status }}">{{ r.status.replace('_', ' ') }}</span>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Requested By</th>
+            <th>Date</th>
+            <th>Notes</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in requests %}
+          <tr>
+            <td>{{ r.title }}</td>
+            <td>{{ r.media_type }}</td>
+            <td>{{ r.requested_by if r.requested_by else '—' }}</td>
+            <td>{{ r.date_requested }}</td>
+            <td>{{ r.notes if r.notes else '—' }}</td>
+            <td>
+              <span class="badge s-{{ r.status }}">{{ r.status.replace('_', ' ') }}</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
   {% else %}
-  <div class="empty">
-    <!-- Potted plant illustration -->
-    <svg width="64" height="72" viewBox="0 0 64 72" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-      <!-- Pot body -->
-      <path d="M15,44 L19,66 L45,66 L49,44 Z" fill="#c8bfaa"/>
-      <!-- Pot rim -->
-      <rect x="12" y="39" width="40" height="8" rx="3.5" fill="#b8a898"/>
-      <!-- Soil -->
-      <ellipse cx="32" cy="43" rx="16" ry="3.5" fill="#8b7355" opacity="0.25"/>
-      <!-- Main stem -->
-      <path d="M32,41 C32,32 31,22 32,12" stroke="#7aab8a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <!-- Left leaf -->
-      <path d="M32,28 C25,21 16,19 14,23 C18,28 26,30 32,28Z" fill="#7aab8a"/>
-      <!-- Right leaf -->
-      <path d="M32,20 C39,13 48,12 50,16 C46,21 38,22 32,20Z" fill="#4a7c59"/>
-      <!-- Top leaf -->
-      <path d="M32,12 C27,5 20,3 19,7 C22,11 28,13 32,12Z" fill="#b8d4c0"/>
-    </svg>
-    No requests yet — submit the first one above.
+  <div class="card">
+    <div class="empty">
+      <svg width="56" height="64" viewBox="0 0 400 400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M132.094 229.262C127.676 229.257 124.09 232.835 124.085 237.253C124.08 241.672 127.658 245.257 132.076 245.262L132.094 229.262ZM246.632 240.03L251.335 233.558C251.017 233.327 250.682 233.119 250.334 232.938L246.632 240.03ZM132.084 343.907L126.811 349.923L126.811 349.923L132.084 343.907ZM131.257 256.153C131.831 251.772 128.745 247.756 124.365 247.182C119.984 246.607 115.967 249.694 115.393 254.074L131.257 256.153ZM241.929 246.501C241.629 246.283 242.356 246.77 243.425 249.491C244.385 251.934 245.291 255.321 246.039 259.535C247.529 267.932 248.237 278.708 247.929 289.782C247.621 300.868 246.306 311.877 243.935 320.799C241.436 330.203 238.237 335.465 235.538 337.363L244.743 350.451C252.372 345.085 256.746 334.892 259.398 324.908C262.179 314.443 263.592 302.133 263.923 290.226C264.254 278.308 263.511 266.419 261.793 256.739C260.936 251.913 259.798 247.408 258.316 243.638C256.944 240.146 254.831 236.099 251.335 233.558L241.929 246.501ZM235.538 337.363C231.908 339.916 224.946 342.278 215.224 343.878C205.786 345.431 194.725 346.116 183.743 345.984C172.759 345.852 162.101 344.904 153.472 343.293C149.155 342.487 145.491 341.541 142.615 340.513C139.616 339.441 138.017 338.469 137.357 337.891L126.811 349.923C129.671 352.43 133.444 354.227 137.23 355.58C141.14 356.977 145.676 358.114 150.535 359.021C160.261 360.837 171.864 361.842 183.551 361.983C195.241 362.124 207.263 361.403 217.822 359.665C228.096 357.975 238.045 355.161 244.743 350.451L235.538 337.363ZM137.357 337.891C135.91 336.623 133.966 333.326 132.337 326.984C130.788 320.957 129.816 313.37 129.345 304.996C128.402 288.271 129.509 269.496 131.257 256.153L115.393 254.074C113.537 268.236 112.363 288.02 113.37 305.896C113.873 314.823 114.934 323.547 116.84 330.965C118.665 338.07 121.596 345.353 126.811 349.923L137.357 337.891ZM132.076 245.262C137.516 245.268 146.405 244.843 156.591 244.375C166.903 243.902 178.791 243.371 190.57 243.13C202.376 242.89 213.904 242.945 223.506 243.618C228.308 243.954 232.496 244.437 235.925 245.078C239.461 245.74 241.712 246.486 242.93 247.122L250.334 232.938C247.052 231.225 242.999 230.124 238.867 229.351C234.627 228.558 229.782 228.018 224.625 227.657C214.311 226.934 202.226 226.889 190.244 227.134C178.236 227.379 166.161 227.919 155.857 228.392C145.429 228.871 137.051 229.268 132.094 229.262L132.076 245.262Z"
+              fill="#c8bfaa" fill-opacity="0.9"/>
+        <path d="M200 227C207.288 173.216 262.046 135.441 269 83" stroke="#7aab8a" stroke-opacity="0.6" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M174.928 231C181.253 205.545 157.22 179.327 164.329 161" stroke="#7aab8a" stroke-opacity="0.6" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M321 77.1535C216.523 72.7477 273.075 165.304 321 85.318" stroke="#4a7c59" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M198.277 125.937C300.467 88.895 237.443 216.377 187 130.853" stroke="#4a7c59" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M286 205.036C260.368 129.453 172.591 193.677 284.382 210" stroke="#4a7c59" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M165.611 104.912C113.787 149.387 203.085 232.192 167.26 92" stroke="#4a7c59" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M101.736 195.493C179.378 137.599 213.556 215 79 215" stroke="#4a7c59" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M244 50.9005C246.594 135.104 322.632 59.0688 245.606 46" stroke="#4a7c59" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      No requests yet — submit the first one above.
+    </div>
   </div>
   {% endif %}
 
