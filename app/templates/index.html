@@ -31,7 +31,7 @@
       padding: 2.5rem 1.25rem 4rem;
     }
 
-    .wrap { max-width: 920px; margin: 0 auto; }
+    .wrap { max-width: 960px; margin: 0 auto; }
 
     /* ── Header ─────────────────────────────────────────────────────────── */
     header {
@@ -71,13 +71,19 @@
       margin-bottom: 1.25rem;
     }
 
-    /* ── Form ───────────────────────────────────────────────────────────── */
+    /* ── Form grid ──────────────────────────────────────────────────────── */
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
     }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
     .field { display: flex; flex-direction: column; gap: 0.35rem; }
+    .field-row { display: flex; flex-direction: row; align-items: center; gap: 0.6rem; margin-top: 0.1rem; }
 
     label {
       font-size: 0.72rem;
@@ -86,7 +92,7 @@
       letter-spacing: 0.07em;
       color: var(--muted-dark);
     }
-    input, select {
+    input[type="text"], select {
       background: var(--surface);
       border: 1px solid var(--border-cream);
       border-radius: 8px;
@@ -98,11 +104,62 @@
       transition: border-color 0.15s, box-shadow 0.15s;
       width: 100%;
     }
-    input:focus, select:focus {
+    input[type="text"]:focus, select:focus {
       border-color: var(--btn);
       box-shadow: 0 0 0 3px var(--focus-ring);
     }
+    select:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
     select option { background: var(--surface); color: var(--text-dark); }
+
+    /* Checkbox */
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--text-dark);
+      text-transform: none;
+      letter-spacing: normal;
+      font-weight: 500;
+      user-select: none;
+    }
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border-cream);
+      border-radius: 5px;
+      background: var(--surface);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s, border-color 0.15s;
+      position: relative;
+    }
+    input[type="checkbox"]:checked {
+      background: var(--btn);
+      border-color: var(--btn);
+    }
+    input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 1px;
+      width: 6px;
+      height: 10px;
+      border: 2px solid white;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg);
+    }
+    input[type="checkbox"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
 
     .actions { display: flex; justify-content: flex-end; margin-top: 1.25rem; }
     button {
@@ -122,6 +179,9 @@
     }
     button:hover { background: var(--btn-h); }
 
+    /* Section divider between form rows */
+    .form-spacer { height: 0; }
+
     /* ── Section title ──────────────────────────────────────────────────── */
     .section-title {
       font-family: Georgia, 'Times New Roman', system-ui, sans-serif;
@@ -136,19 +196,20 @@
 
     /* ── Table ──────────────────────────────────────────────────────────── */
     .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     th {
       text-align: left;
       padding: 0.55rem 0.75rem;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.07em;
       color: var(--muted-dark);
       border-bottom: 2px solid var(--border-cream);
+      white-space: nowrap;
     }
     td {
-      padding: 0.85rem 0.75rem;
+      padding: 0.8rem 0.75rem;
       border-bottom: 1px solid var(--divider);
       vertical-align: top;
       color: var(--text-dark);
@@ -159,9 +220,9 @@
     /* ── Badges ─────────────────────────────────────────────────────────── */
     .badge {
       display: inline-block;
-      padding: 0.2rem 0.65rem;
+      padding: 0.2rem 0.6rem;
       border-radius: 999px;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
       white-space: nowrap;
     }
@@ -169,6 +230,18 @@
     .s-in_progress { background: #f5eacf; color: #7a5a1e; border: 1px solid #e0cf9e; }
     .s-fulfilled   { background: #d4edda; color: #2d6b3a; border: 1px solid #a8d4b4; }
     .s-not_found   { background: #f5d8d8; color: #8b3a3a; border: 1px solid #e0b4b4; }
+
+    .badge-sm {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      background: #d4edda;
+      color: #2d6b3a;
+      border: 1px solid #a8d4b4;
+      white-space: nowrap;
+    }
 
     /* ── Empty state ────────────────────────────────────────────────────── */
     .empty {
@@ -182,8 +255,8 @@
     }
 
     /* ── Responsive ─────────────────────────────────────────────────────── */
-    @media (max-width: 580px) {
-      .grid { grid-template-columns: 1fr; }
+    @media (max-width: 640px) {
+      .grid, .grid-3 { grid-template-columns: 1fr; }
       .header-plant { display: none; }
     }
   </style>
@@ -197,22 +270,18 @@
       <h1>Media Requests</h1>
       <p>Submit a movie, TV show, or other media request for the local library.</p>
     </div>
-
     <!--
       Plant illustration — Potted House Plant by SVG Repo
       Source: https://www.svgrepo.com/svg/452851/potted-house-plant
-      License: CC Attribution License (https://www.svgrepo.com/page/licensing)
+      License: CC Attribution License
       Colours adapted for this theme.
     -->
     <svg class="header-plant" width="130" height="130" viewBox="0 0 400 400" fill="none"
          xmlns="http://www.w3.org/2000/svg" aria-label="Potted house plant illustration">
-      <!-- Pot -->
       <path d="M132.094 229.262C127.676 229.257 124.09 232.835 124.085 237.253C124.08 241.672 127.658 245.257 132.076 245.262L132.094 229.262ZM246.632 240.03L251.335 233.558C251.017 233.327 250.682 233.119 250.334 232.938L246.632 240.03ZM132.084 343.907L126.811 349.923L126.811 349.923L132.084 343.907ZM131.257 256.153C131.831 251.772 128.745 247.756 124.365 247.182C119.984 246.607 115.967 249.694 115.393 254.074L131.257 256.153ZM241.929 246.501C241.629 246.283 242.356 246.77 243.425 249.491C244.385 251.934 245.291 255.321 246.039 259.535C247.529 267.932 248.237 278.708 247.929 289.782C247.621 300.868 246.306 311.877 243.935 320.799C241.436 330.203 238.237 335.465 235.538 337.363L244.743 350.451C252.372 345.085 256.746 334.892 259.398 324.908C262.179 314.443 263.592 302.133 263.923 290.226C264.254 278.308 263.511 266.419 261.793 256.739C260.936 251.913 259.798 247.408 258.316 243.638C256.944 240.146 254.831 236.099 251.335 233.558L241.929 246.501ZM235.538 337.363C231.908 339.916 224.946 342.278 215.224 343.878C205.786 345.431 194.725 346.116 183.743 345.984C172.759 345.852 162.101 344.904 153.472 343.293C149.155 342.487 145.491 341.541 142.615 340.513C139.616 339.441 138.017 338.469 137.357 337.891L126.811 349.923C129.671 352.43 133.444 354.227 137.23 355.58C141.14 356.977 145.676 358.114 150.535 359.021C160.261 360.837 171.864 361.842 183.551 361.983C195.241 362.124 207.263 361.403 217.822 359.665C228.096 357.975 238.045 355.161 244.743 350.451L235.538 337.363ZM137.357 337.891C135.91 336.623 133.966 333.326 132.337 326.984C130.788 320.957 129.816 313.37 129.345 304.996C128.402 288.271 129.509 269.496 131.257 256.153L115.393 254.074C113.537 268.236 112.363 288.02 113.37 305.896C113.873 314.823 114.934 323.547 116.84 330.965C118.665 338.07 121.596 345.353 126.811 349.923L137.357 337.891ZM132.076 245.262C137.516 245.268 146.405 244.843 156.591 244.375C166.903 243.902 178.791 243.371 190.57 243.13C202.376 242.89 213.904 242.945 223.506 243.618C228.308 243.954 232.496 244.437 235.925 245.078C239.461 245.74 241.712 246.486 242.93 247.122L250.334 232.938C247.052 231.225 242.999 230.124 238.867 229.351C234.627 228.558 229.782 228.018 224.625 227.657C214.311 226.934 202.226 226.889 190.244 227.134C178.236 227.379 166.161 227.919 155.857 228.392C145.429 228.871 137.051 229.268 132.094 229.262L132.076 245.262Z"
             fill="#e8d0b0" fill-opacity="0.95"/>
-      <!-- Lighter stems -->
       <path d="M200 227C207.288 173.216 262.046 135.441 269 83" stroke="#c8e6d4" stroke-opacity="0.75" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M174.928 231C181.253 205.545 157.22 179.327 164.329 161" stroke="#c8e6d4" stroke-opacity="0.75" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-      <!-- Main leaves -->
       <path d="M321 77.1535C216.523 72.7477 273.075 165.304 321 85.318" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M198.277 125.937C300.467 88.895 237.443 216.377 187 130.853" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M286 205.036C260.368 129.453 172.591 193.677 284.382 210" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
@@ -225,8 +294,10 @@
   <!-- Request form -->
   <div class="card">
     <h2>New Request</h2>
-    <form method="POST" action="/submit">
-      <div class="grid">
+    <form method="POST" action="/submit" id="request-form">
+
+      <!-- Row 1: Title + Type -->
+      <div class="grid" style="margin-bottom:1rem">
         <div class="field">
           <label for="title">Title *</label>
           <input id="title" name="title" type="text" placeholder="e.g. Inception" required>
@@ -236,18 +307,55 @@
           <select id="media_type" name="media_type">
             <option value="Movie">Movie</option>
             <option value="TV Show">TV Show</option>
-            <option value="Other">Other</option>
+            <option value="Anime">Anime</option>
+            <option value="Music">Music</option>
+            <option value="AudioBook">AudioBook</option>
+            <option value="eBook">eBook</option>
+            <option value="ComicBook">ComicBook</option>
+            <option value="Manga">Manga</option>
           </select>
         </div>
+      </div>
+
+      <!-- Row 2: Quality + Audio Language + Subtitles -->
+      <div class="grid-3" style="margin-bottom:1rem" id="quality-row">
+        <div class="field">
+          <label for="quality">Quality</label>
+          <select id="quality" name="quality"></select>
+        </div>
+        <div class="field" id="audio-lang-field">
+          <label for="audio_language">Audio Language</label>
+          <select id="audio_language" name="audio_language">
+            <option value="any">Any</option>
+            <option value="english">English</option>
+            <option value="french">French</option>
+            <option value="japanese">Japanese</option>
+            <option value="original">Original</option>
+          </select>
+        </div>
+        <div class="field" id="subtitles-field" style="justify-content:flex-end;padding-bottom:0.15rem">
+          <label>Subtitles</label>
+          <div class="field-row" style="flex:1;align-items:center">
+            <label class="checkbox-label" for="subtitles">
+              <input type="checkbox" id="subtitles" name="subtitles">
+              Include subtitles
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Requested By + Notes -->
+      <div class="grid">
         <div class="field">
           <label for="requested_by">Your Name <span style="font-weight:400;text-transform:none">(optional)</span></label>
           <input id="requested_by" name="requested_by" type="text" placeholder="e.g. Jesse">
         </div>
         <div class="field">
           <label for="notes">Notes <span style="font-weight:400;text-transform:none">(optional)</span></label>
-          <input id="notes" name="notes" type="text" placeholder="e.g. Season 2 only, 4K preferred">
+          <input id="notes" name="notes" type="text" placeholder="e.g. director's cut, avoid dubbed">
         </div>
       </div>
+
       <div class="actions">
         <button type="submit">
           <svg width="13" height="13" viewBox="0 0 13 13" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -271,6 +379,9 @@
           <tr>
             <th>Title</th>
             <th>Type</th>
+            <th>Quality</th>
+            <th>Audio</th>
+            <th>Subs</th>
             <th>Requested By</th>
             <th>Date</th>
             <th>Notes</th>
@@ -282,6 +393,15 @@
           <tr>
             <td>{{ r.title }}</td>
             <td>{{ r.media_type }}</td>
+            <td>{{ r.quality if r.quality else '—' }}</td>
+            <td>{{ r.audio_language if r.audio_language else '—' }}</td>
+            <td>
+              {% if r.subtitles == 'yes' %}
+                <span class="badge-sm">yes</span>
+              {% else %}
+                —
+              {% endif %}
+            </td>
             <td>{{ r.requested_by if r.requested_by else '—' }}</td>
             <td>{{ r.date_requested }}</td>
             <td>{{ r.notes if r.notes else '—' }}</td>
@@ -315,5 +435,61 @@
   {% endif %}
 
 </div>
+
+<script>
+  const QUALITY = {
+    video:     ['any', '720p', '1080p', '1080p-HDR', '1440p', '2160p-4K', '2160p-4K-HDR'],
+    music:     ['any', 'mp3-128k', 'mp3-192k', 'mp3-256k', 'mp3-320k',
+                'aac-128k', 'aac-192k', 'aac-256k',
+                'ogg-192k', 'ogg-320k', 'flac', 'wav'],
+    audiobook: ['any', 'mp3-64k', 'mp3-128k', 'mp3-192k',
+                'aac-64k', 'aac-128k', 'm4b-64k', 'm4b-128k'],
+    ebook:     ['any', 'epub', 'pdf', 'azw3', 'mobi'],
+    fixed:     ['highest'],
+  };
+
+  const VIDEO_TYPES = ['Movie', 'TV Show', 'Anime'];
+
+  function qualityType(mediaType) {
+    if (VIDEO_TYPES.includes(mediaType)) return 'video';
+    if (mediaType === 'Music')           return 'music';
+    if (mediaType === 'AudioBook')       return 'audiobook';
+    if (mediaType === 'eBook')           return 'ebook';
+    return 'fixed'; // ComicBook, Manga
+  }
+
+  function updateFields() {
+    const mt        = document.getElementById('media_type').value;
+    const qSel      = document.getElementById('quality');
+    const langField = document.getElementById('audio-lang-field');
+    const langSel   = document.getElementById('audio_language');
+    const subField  = document.getElementById('subtitles-field');
+    const subCheck  = document.getElementById('subtitles');
+    const qt        = qualityType(mt);
+    const isVideo   = VIDEO_TYPES.includes(mt);
+    const isFixed   = qt === 'fixed';
+
+    // Populate quality options
+    qSel.innerHTML = '';
+    QUALITY[qt].forEach(opt => {
+      const el = document.createElement('option');
+      el.value = opt;
+      el.textContent = opt;
+      qSel.appendChild(el);
+    });
+    qSel.disabled = isFixed;
+
+    // Show/hide & enable/disable video-only fields
+    const show = isVideo ? '' : 'none';
+    langField.style.display = show;
+    langSel.disabled = !isVideo;
+    subField.style.display = show;
+    subCheck.disabled = !isVideo;
+    if (!isVideo) subCheck.checked = false;
+  }
+
+  document.getElementById('media_type').addEventListener('change', updateFields);
+  updateFields();
+</script>
 </body>
 </html>
