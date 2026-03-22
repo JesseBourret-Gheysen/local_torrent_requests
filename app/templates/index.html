@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Requests</title>
+  <style>
+    :root {
+      --bg:          #0f1117;
+      --surface:     #1a1d27;
+      --border:      #2a2d3e;
+      --text:        #e2e8f0;
+      --muted:       #64748b;
+      --accent:      #6366f1;
+      --accent-h:    #4f52e0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+    .wrap { max-width: 920px; margin: 0 auto; }
+
+    header { margin-bottom: 2rem; }
+    header h1 { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+    header p  { color: var(--muted); font-size: 0.875rem; margin-top: 0.25rem; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .card h2 { font-size: 0.95rem; font-weight: 600; margin-bottom: 1.25rem; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .full { grid-column: 1 / -1; }
+
+    .field { display: flex; flex-direction: column; gap: 0.35rem; }
+    label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    input, select, textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      padding: 0.55rem 0.75rem;
+      font-size: 0.875rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+    input:focus, select:focus { border-color: var(--accent); }
+    select option { background: var(--surface); }
+
+    .actions { display: flex; justify-content: flex-end; margin-top: 1.25rem; }
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.6rem 1.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    button:hover { background: var(--accent-h); }
+
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .s-requested   { background: rgba(59,130,246,.15); color: #93c5fd; }
+    .s-in_progress { background: rgba(245,158,11,.15); color: #fcd34d; }
+    .s-fulfilled   { background: rgba(34,197,94,.15);  color: #86efac; }
+    .s-not_found   { background: rgba(239,68,68,.15);  color: #fca5a5; }
+
+    .empty { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.9rem; }
+
+    @media (max-width: 580px) {
+      .grid { grid-template-columns: 1fr; }
+      .full { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Media Requests</h1>
+    <p>Submit a movie, TV show, or other media request for the local library.</p>
+  </header>
+
+  <div class="card">
+    <h2>New Request</h2>
+    <form method="POST" action="/submit">
+      <div class="grid">
+        <div class="field">
+          <label for="title">Title *</label>
+          <input id="title" name="title" type="text" placeholder="e.g. Inception" required>
+        </div>
+        <div class="field">
+          <label for="media_type">Type</label>
+          <select id="media_type" name="media_type">
+            <option value="Movie">Movie</option>
+            <option value="TV Show">TV Show</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="requested_by">Your Name <span style="font-weight:400;text-transform:none">(optional)</span></label>
+          <input id="requested_by" name="requested_by" type="text" placeholder="e.g. Jesse">
+        </div>
+        <div class="field">
+          <label for="notes">Notes <span style="font-weight:400;text-transform:none">(optional)</span></label>
+          <input id="notes" name="notes" type="text" placeholder="e.g. Season 2 only, 4K preferred">
+        </div>
+      </div>
+      <div class="actions">
+        <button type="submit">Submit Request</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="section-title">Past Requests</div>
+  {% if requests %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Requested By</th>
+          <th>Date</th>
+          <th>Notes</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in requests %}
+        <tr>
+          <td>{{ r.title }}</td>
+          <td>{{ r.media_type }}</td>
+          <td>{{ r.requested_by if r.requested_by else '—' }}</td>
+          <td>{{ r.date_requested }}</td>
+          <td>{{ r.notes if r.notes else '—' }}</td>
+          <td>
+            <span class="badge s-{{ r.status }}">
+              {{ r.status.replace('_', ' ') }}
+            </span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty">No requests yet — submit the first one above.</div>
+  {% endif %}
+
+</div>
+</body>
+</html>

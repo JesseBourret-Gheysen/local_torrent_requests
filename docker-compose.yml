@@ -1,0 +1,17 @@
+services:
+  torrentreq:
+    build: ./app
+    container_name: torrentreq
+    ports:
+      - "80:80"
+    volumes:
+      - /home/jesse/docker/torrentreq/data:/data
+    restart: unless-stopped
+
+  dnsmasq_torrentreq:
+    build: ./dnsmasq
+    container_name: dnsmasq_torrentreq
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped

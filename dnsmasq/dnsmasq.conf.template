@@ -1,0 +1,22 @@
+# dnsmasq — local DNS for torrentreq.bug
+# Auto-generated at container start from this template.
+
+# Don't read /etc/resolv.conf — we define upstreams explicitly
+no-resolv
+
+# Upstream DNS (Google — change if you prefer another)
+server=8.8.8.8
+server=8.8.4.4
+
+# Resolve torrentreq.bug to this server (substituted at startup)
+address=/torrentreq.bug/SERVER_IP_HERE
+
+# Only answer queries on the LAN interface, not loopback
+bind-interfaces
+except-interface=lo
+
+# Don't read /etc/hosts
+no-hosts
+
+# Log queries (visible via: docker logs dnsmasq_torrentreq)
+log-queries
