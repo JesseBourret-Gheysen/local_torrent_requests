@@ -4,9 +4,9 @@
 # Don't read /etc/resolv.conf — we define upstreams explicitly
 no-resolv
 
-# Upstream DNS (Google — change if you prefer another)
-server=8.8.8.8
-server=8.8.4.4
+# Upstream DNS (Cloudflare)
+server=1.1.1.1
+server=1.0.0.1
 
 # Resolve torrentreq.bug to this server (substituted at startup)
 address=/torrentreq.bug/SERVER_IP_HERE
