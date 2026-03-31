@@ -4,123 +4,211 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Media Requests</title>
+  <link rel="manifest" href="/static/manifest.json">
+  <meta name="theme-color" content="#091510">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Epilogue:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:           #3d6b4f;
-      --bg-deep:      #2e5c40;
-      --surface:      #fdfaf4;
-      --border-cream: #d6cdb8;
-      --text-light:   #f4f1eb;
-      --text-dark:    #2d2a22;
-      --muted-light:  rgba(244, 241, 235, 0.68);
-      --muted-dark:   #7a7260;
-      --btn:          #2e5c40;
-      --btn-h:        #1e4a2e;
-      --focus-ring:   rgba(46, 92, 64, 0.18);
-      --row-hover:    #f7f4ee;
-      --divider:      #e8e0d0;
+      --bg:           #091510;
+      --bg-mid:       #0f2318;
+      --surface:      #f5f1e8;
+      --surface-alt:  #ede9df;
+      --border:       #d4ccb8;
+      --border-green: rgba(52, 140, 84, 0.25);
+      --text-light:   #d9eed9;
+      --text-dim:     rgba(200, 235, 210, 0.55);
+      --text-dark:    #17261e;
+      --muted-dark:   #6b7d72;
+      --btn:          #1c6b3a;
+      --btn-h:        #145230;
+      --btn-glow:     rgba(28, 107, 58, 0.45);
+      --focus-ring:   rgba(52, 140, 84, 0.28);
+      --row-hover:    #edf4ef;
+      --divider:      #e2ddd3;
+      --accent:       #2a8a52;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: 'Epilogue', system-ui, sans-serif;
       background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse 90% 55% at 50% 0%, rgba(28, 107, 58, 0.28) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 10% 80%, rgba(9, 40, 20, 0.9) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 30% at 90% 60%, rgba(15, 50, 28, 0.6) 0%, transparent 50%);
       color: var(--text-light);
       min-height: 100vh;
-      padding: 2.5rem 1.25rem 4rem;
+      padding: 3rem 1.25rem 5rem;
     }
 
-    .wrap { max-width: 960px; margin: 0 auto; }
+    /* Subtle grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    .wrap { max-width: 980px; margin: 0 auto; position: relative; z-index: 1; }
 
     /* ── Header ─────────────────────────────────────────────────────────── */
     header {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      margin-bottom: 2.25rem;
+      margin-bottom: 2.75rem;
       gap: 1.5rem;
     }
+    .header-text {
+      padding-top: 0.5rem;
+    }
+    .header-eyebrow {
+      font-family: 'Epilogue', sans-serif;
+      font-size: 0.63rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
     .header-text h1 {
-      font-family: Georgia, 'Times New Roman', system-ui, sans-serif;
-      font-size: 1.8rem;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 3rem;
       font-weight: 700;
       color: var(--text-light);
-      line-height: 1.2;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .header-text h1 em {
+      font-style: italic;
+      font-weight: 600;
+      color: rgba(180, 230, 195, 0.85);
     }
     .header-text p {
-      color: var(--muted-light);
-      font-size: 0.9rem;
-      margin-top: 0.4rem;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      margin-top: 0.7rem;
+      font-weight: 400;
+      max-width: 320px;
+      line-height: 1.55;
     }
-    .header-plant { flex-shrink: 0; }
+    .header-plant {
+      flex-shrink: 0;
+      margin-top: -0.5rem;
+      opacity: 0.88;
+      animation: plant-sway 8s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+    @keyframes plant-sway {
+      0%, 100% { transform: rotate(-1deg); }
+      50%       { transform: rotate(1.2deg); }
+    }
 
     /* ── Card ───────────────────────────────────────────────────────────── */
     .card {
       background: var(--surface);
-      border: 1px solid var(--border-cream);
-      border-radius: 16px;
-      padding: 1.75rem;
-      margin-bottom: 1.75rem;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.1);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow:
+        0 12px 48px rgba(0,0,0,0.45),
+        0 2px 8px rgba(0,0,0,0.2),
+        0 0 0 1px rgba(255,255,255,0.05) inset;
     }
-    .card h2 {
-      font-size: 1rem;
-      font-weight: 600;
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1.5px solid var(--divider);
+    }
+    .card-header h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 700;
       color: var(--text-dark);
-      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+    .card-header-badge {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      background: rgba(42, 138, 82, 0.1);
+      border: 1px solid rgba(42, 138, 82, 0.25);
+      border-radius: 999px;
+      padding: 0.18rem 0.55rem;
     }
 
     /* ── Form grid ──────────────────────────────────────────────────────── */
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+      gap: 1.1rem;
     }
     .grid-3 {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 1rem;
+      gap: 1.1rem;
     }
-    .field { display: flex; flex-direction: column; gap: 0.35rem; }
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
     .field-row { display: flex; flex-direction: row; align-items: center; gap: 0.6rem; margin-top: 0.1rem; }
 
     label {
-      font-size: 0.72rem;
-      font-weight: 600;
+      font-size: 0.62rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.1em;
       color: var(--muted-dark);
     }
+    label span { font-weight: 400; text-transform: none; letter-spacing: normal; color: #9aa89f; }
+
     input[type="text"], select {
-      background: var(--surface);
-      border: 1px solid var(--border-cream);
-      border-radius: 8px;
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
       color: var(--text-dark);
-      padding: 0.55rem 0.75rem;
+      padding: 0.6rem 0.8rem;
       font-size: 0.875rem;
-      font-family: inherit;
+      font-family: 'Epilogue', sans-serif;
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
       width: 100%;
     }
     input[type="text"]:focus, select:focus {
-      border-color: var(--btn);
+      border-color: var(--accent);
       box-shadow: 0 0 0 3px var(--focus-ring);
     }
-    select:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
+    input[type="text"]::placeholder {
+      color: #b4bdb9;
     }
-    select option { background: var(--surface); color: var(--text-dark); }
+    select:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      background: var(--surface-alt);
+    }
+    select option { background: white; color: var(--text-dark); }
 
-    /* Checkbox */
+    /* Custom checkbox */
     .checkbox-label {
       display: flex;
       align-items: center;
       gap: 0.5rem;
       cursor: pointer;
       font-size: 0.875rem;
+      font-family: 'Epilogue', sans-serif;
       color: var(--text-dark);
       text-transform: none;
       letter-spacing: normal;
@@ -132,12 +220,12 @@
       -webkit-appearance: none;
       width: 18px;
       height: 18px;
-      border: 2px solid var(--border-cream);
+      border: 1.5px solid var(--border);
       border-radius: 5px;
-      background: var(--surface);
+      background: white;
       cursor: pointer;
       flex-shrink: 0;
-      transition: background 0.15s, border-color 0.15s;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
       position: relative;
     }
     input[type="checkbox"]:checked {
@@ -161,70 +249,91 @@
       box-shadow: 0 0 0 3px var(--focus-ring);
     }
 
-    .actions { display: flex; justify-content: flex-end; margin-top: 1.25rem; }
+    .actions { display: flex; justify-content: flex-end; margin-top: 1.5rem; }
     button {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       background: var(--btn);
       color: #fff;
       border: none;
-      border-radius: 8px;
-      padding: 0.65rem 1.75rem;
+      border-radius: 10px;
+      padding: 0.7rem 1.85rem;
       font-size: 0.875rem;
       font-weight: 600;
-      letter-spacing: 0.03em;
+      font-family: 'Epilogue', sans-serif;
+      letter-spacing: 0.04em;
       cursor: pointer;
-      transition: background 0.15s;
+      transition: background 0.15s, box-shadow 0.18s, transform 0.1s;
     }
-    button:hover { background: var(--btn-h); }
+    button:hover {
+      background: var(--btn-h);
+      box-shadow: 0 4px 18px var(--btn-glow);
+      transform: translateY(-1px);
+    }
+    button:active { transform: translateY(0); }
 
-    /* Section divider between form rows */
-    .form-spacer { height: 0; }
-
-    /* ── Section title ──────────────────────────────────────────────────── */
-    .section-title {
-      font-family: Georgia, 'Times New Roman', system-ui, sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
+    /* ── Section header ──────────────────────────────────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.1rem;
+    }
+    .section-header h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.35rem;
+      font-weight: 700;
       color: var(--text-light);
-      display: inline-block;
-      border-bottom: 2px solid rgba(244,241,235,0.35);
-      padding-bottom: 0.4rem;
-      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(52, 140, 84, 0.35), transparent);
     }
 
     /* ── Table ──────────────────────────────────────────────────────────── */
     .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.835rem; }
+    thead { background: var(--surface-alt); }
     th {
       text-align: left;
-      padding: 0.55rem 0.75rem;
-      font-size: 0.7rem;
-      font-weight: 600;
+      padding: 0.65rem 0.9rem;
+      font-size: 0.6rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.1em;
       color: var(--muted-dark);
-      border-bottom: 2px solid var(--border-cream);
+      border-bottom: 1.5px solid var(--border);
       white-space: nowrap;
+      font-family: 'Epilogue', sans-serif;
     }
     td {
-      padding: 0.8rem 0.75rem;
+      padding: 0.85rem 0.9rem;
       border-bottom: 1px solid var(--divider);
-      vertical-align: top;
+      vertical-align: middle;
       color: var(--text-dark);
+      font-family: 'Epilogue', sans-serif;
     }
+    td:first-child { font-weight: 500; }
     tr:hover td { background: var(--row-hover); }
     tr:last-child td { border-bottom: none; }
+    tr:hover td:first-child {
+      box-shadow: inset 3px 0 0 var(--accent);
+    }
 
     /* ── Badges ─────────────────────────────────────────────────────────── */
     .badge {
       display: inline-block;
-      padding: 0.2rem 0.6rem;
+      padding: 0.22rem 0.65rem;
       border-radius: 999px;
-      font-size: 0.7rem;
-      font-weight: 600;
+      font-size: 0.67rem;
+      font-weight: 700;
+      font-family: 'Epilogue', sans-serif;
       white-space: nowrap;
+      letter-spacing: 0.03em;
+      text-transform: capitalize;
     }
     .s-requested   { background: #ddeef8; color: #2d6a8f; border: 1px solid #b8d9ef; }
     .s-in_progress { background: #f5eacf; color: #7a5a1e; border: 1px solid #e0cf9e; }
@@ -233,10 +342,11 @@
 
     .badge-sm {
       display: inline-block;
-      padding: 0.15rem 0.5rem;
+      padding: 0.17rem 0.5rem;
       border-radius: 999px;
-      font-size: 0.68rem;
-      font-weight: 600;
+      font-size: 0.65rem;
+      font-weight: 700;
+      font-family: 'Epilogue', sans-serif;
       background: #d4edda;
       color: #2d6b3a;
       border: 1px solid #a8d4b4;
@@ -248,16 +358,86 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.75rem;
-      padding: 3rem;
+      gap: 1rem;
+      padding: 3.5rem 2rem;
       color: var(--muted-dark);
       font-size: 0.9rem;
+      text-align: center;
+      font-family: 'Epilogue', sans-serif;
     }
+    .empty-icon { opacity: 0.5; }
+
+    /* ── Form row spacing ────────────────────────────────────────────────── */
+    .form-row { margin-bottom: 1.1rem; }
+
+    /* ── Page load animation ─────────────────────────────────────────────── */
+    .card, .section-header, header {
+      animation: fade-up 0.45s ease both;
+    }
+    .card:nth-child(2) { animation-delay: 0.08s; }
+    .section-header    { animation-delay: 0.14s; }
+    .card:last-child   { animation-delay: 0.18s; }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Mobile request list ─────────────────────────────────────────────── */
+    .req-mobile-list { display: none; }
+    .req-mobile-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.9rem 1.25rem; border-bottom: 1px solid var(--divider);
+      cursor: pointer; transition: background 0.1s;
+    }
+    .req-mobile-item:last-child { border-bottom: none; }
+    .req-mobile-item:active { background: var(--row-hover); }
+    .req-mobile-body { flex: 1; min-width: 0; }
+    .req-mobile-title { font-size: 0.9rem; font-weight: 500; color: var(--text-dark); margin-bottom: 0.35rem; }
+    .req-mobile-meta { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+    .req-mobile-type { font-size: 0.72rem; font-weight: 600; color: var(--muted-dark); }
+    .req-mobile-arrow { color: var(--muted-dark); font-size: 1.1rem; flex-shrink: 0; opacity: 0.4; font-family: 'Epilogue', sans-serif; }
+
+    /* ── Request detail sheet ────────────────────────────────────────────── */
+    .req-sheet-backdrop {
+      position: fixed; inset: 0; background: rgba(5, 15, 10, 0.65);
+      backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+      display: flex; align-items: flex-end; z-index: 200; overflow: hidden;
+    }
+    .req-sheet {
+      background: var(--surface); border-radius: 22px 22px 0 0;
+      padding: 1.25rem 1.5rem 2.5rem; width: 100%; max-height: 85vh; overflow-y: auto;
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.35);
+      animation: rmd-up 0.22s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    @keyframes rmd-up {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+    .rmd-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 1.1rem; display: block; }
+    .rmd-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.1rem; }
+    .rmd-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.3rem; font-weight: 700; color: var(--text-dark); letter-spacing: -0.01em; flex: 1; padding-right: 0.75rem; }
+    .rmd-close {
+      background: #edeae0; border: none; border-radius: 50%;
+      width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 0.9rem; color: var(--muted-dark); flex-shrink: 0;
+      transition: background 0.12s; font-family: 'Epilogue', sans-serif;
+    }
+    .rmd-close:hover { background: var(--divider); }
+    .rmd-row { display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 0; border-bottom: 1px solid var(--divider); font-size: 0.875rem; }
+    .rmd-row:last-child { border-bottom: none; }
+    .rmd-label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted-dark); }
+    .rmd-val { color: var(--text-dark); text-align: right; }
 
     /* ── Responsive ─────────────────────────────────────────────────────── */
     @media (max-width: 640px) {
+      body { padding: 2rem 1rem 4rem; }
       .grid, .grid-3 { grid-template-columns: 1fr; }
       .header-plant { display: none; }
+      .header-text h1 { font-size: 2.2rem; }
+      .card { padding: 1.4rem; }
+      /* Hide desktop table, show mobile list */
+      .table-wrap { display: none; }
+      .req-mobile-list { display: block; }
     }
   </style>
 </head>
@@ -267,8 +447,9 @@
   <!-- Header -->
   <header>
     <div class="header-text">
-      <h1>Media Requests</h1>
-      <p>Submit a movie, TV show, or other media request for the local library.</p>
+      <span class="header-eyebrow">Local Library</span>
+      <h1>Media <em>Requests</em></h1>
+      <p>Submit a movie, TV show, or other media request for the home library.</p>
     </div>
     <!--
       Plant illustration — Potted House Plant by SVG Repo
@@ -276,28 +457,31 @@
       License: CC Attribution License
       Colours adapted for this theme.
     -->
-    <svg class="header-plant" width="130" height="130" viewBox="0 0 400 400" fill="none"
+    <svg class="header-plant" width="120" height="120" viewBox="0 0 400 400" fill="none"
          xmlns="http://www.w3.org/2000/svg" aria-label="Potted house plant illustration">
       <path d="M132.094 229.262C127.676 229.257 124.09 232.835 124.085 237.253C124.08 241.672 127.658 245.257 132.076 245.262L132.094 229.262ZM246.632 240.03L251.335 233.558C251.017 233.327 250.682 233.119 250.334 232.938L246.632 240.03ZM132.084 343.907L126.811 349.923L126.811 349.923L132.084 343.907ZM131.257 256.153C131.831 251.772 128.745 247.756 124.365 247.182C119.984 246.607 115.967 249.694 115.393 254.074L131.257 256.153ZM241.929 246.501C241.629 246.283 242.356 246.77 243.425 249.491C244.385 251.934 245.291 255.321 246.039 259.535C247.529 267.932 248.237 278.708 247.929 289.782C247.621 300.868 246.306 311.877 243.935 320.799C241.436 330.203 238.237 335.465 235.538 337.363L244.743 350.451C252.372 345.085 256.746 334.892 259.398 324.908C262.179 314.443 263.592 302.133 263.923 290.226C264.254 278.308 263.511 266.419 261.793 256.739C260.936 251.913 259.798 247.408 258.316 243.638C256.944 240.146 254.831 236.099 251.335 233.558L241.929 246.501ZM235.538 337.363C231.908 339.916 224.946 342.278 215.224 343.878C205.786 345.431 194.725 346.116 183.743 345.984C172.759 345.852 162.101 344.904 153.472 343.293C149.155 342.487 145.491 341.541 142.615 340.513C139.616 339.441 138.017 338.469 137.357 337.891L126.811 349.923C129.671 352.43 133.444 354.227 137.23 355.58C141.14 356.977 145.676 358.114 150.535 359.021C160.261 360.837 171.864 361.842 183.551 361.983C195.241 362.124 207.263 361.403 217.822 359.665C228.096 357.975 238.045 355.161 244.743 350.451L235.538 337.363ZM137.357 337.891C135.91 336.623 133.966 333.326 132.337 326.984C130.788 320.957 129.816 313.37 129.345 304.996C128.402 288.271 129.509 269.496 131.257 256.153L115.393 254.074C113.537 268.236 112.363 288.02 113.37 305.896C113.873 314.823 114.934 323.547 116.84 330.965C118.665 338.07 121.596 345.353 126.811 349.923L137.357 337.891ZM132.076 245.262C137.516 245.268 146.405 244.843 156.591 244.375C166.903 243.902 178.791 243.371 190.57 243.13C202.376 242.89 213.904 242.945 223.506 243.618C228.308 243.954 232.496 244.437 235.925 245.078C239.461 245.74 241.712 246.486 242.93 247.122L250.334 232.938C247.052 231.225 242.999 230.124 238.867 229.351C234.627 228.558 229.782 228.018 224.625 227.657C214.311 226.934 202.226 226.889 190.244 227.134C178.236 227.379 166.161 227.919 155.857 228.392C145.429 228.871 137.051 229.268 132.094 229.262L132.076 245.262Z"
-            fill="#e8d0b0" fill-opacity="0.95"/>
-      <path d="M200 227C207.288 173.216 262.046 135.441 269 83" stroke="#c8e6d4" stroke-opacity="0.75" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M174.928 231C181.253 205.545 157.22 179.327 164.329 161" stroke="#c8e6d4" stroke-opacity="0.75" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M321 77.1535C216.523 72.7477 273.075 165.304 321 85.318" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M198.277 125.937C300.467 88.895 237.443 216.377 187 130.853" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M286 205.036C260.368 129.453 172.591 193.677 284.382 210" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M165.611 104.912C113.787 149.387 203.085 232.192 167.26 92" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M101.736 195.493C179.378 137.599 213.556 215 79 215" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M244 50.9005C246.594 135.104 322.632 59.0688 245.606 46" stroke="#e8f5ee" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+            fill="#7a6040" fill-opacity="0.9"/>
+      <path d="M200 227C207.288 173.216 262.046 135.441 269 83" stroke="#4ecb7a" stroke-opacity="0.6" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M174.928 231C181.253 205.545 157.22 179.327 164.329 161" stroke="#4ecb7a" stroke-opacity="0.6" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M321 77.1535C216.523 72.7477 273.075 165.304 321 85.318" stroke="#a8f0c0" stroke-opacity="0.88" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M198.277 125.937C300.467 88.895 237.443 216.377 187 130.853" stroke="#a8f0c0" stroke-opacity="0.88" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M286 205.036C260.368 129.453 172.591 193.677 284.382 210" stroke="#a8f0c0" stroke-opacity="0.88" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M165.611 104.912C113.787 149.387 203.085 232.192 167.26 92" stroke="#a8f0c0" stroke-opacity="0.88" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M101.736 195.493C179.378 137.599 213.556 215 79 215" stroke="#a8f0c0" stroke-opacity="0.88" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M244 50.9005C246.594 135.104 322.632 59.0688 245.606 46" stroke="#a8f0c0" stroke-opacity="0.88" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </header>
 
   <!-- Request form -->
   <div class="card">
-    <h2>New Request</h2>
+    <div class="card-header">
+      <h2>New Request</h2>
+      <span class="card-header-badge">Submit</span>
+    </div>
     <form method="POST" action="/submit" id="request-form">
 
       <!-- Row 1: Title + Type -->
-      <div class="grid" style="margin-bottom:1rem">
+      <div class="grid form-row">
         <div class="field">
           <label for="title">Title *</label>
           <input id="title" name="title" type="text" placeholder="e.g. Inception" required>
@@ -318,7 +502,7 @@
       </div>
 
       <!-- Row 2: Quality + Audio Language + Subtitles -->
-      <div class="grid-3" style="margin-bottom:1rem" id="quality-row">
+      <div class="grid-3 form-row" id="quality-row">
         <div class="field">
           <label for="quality">Quality</label>
           <select id="quality" name="quality"></select>
@@ -330,14 +514,14 @@
             <option value="english">English</option>
             <option value="french">French</option>
             <option value="japanese">Japanese</option>
-            <option value="original">Original</option>
+            <option value="original" selected>Original</option>
           </select>
         </div>
         <div class="field" id="subtitles-field" style="justify-content:flex-end;padding-bottom:0.15rem">
           <label>Subtitles</label>
           <div class="field-row" style="flex:1;align-items:center">
             <label class="checkbox-label" for="subtitles">
-              <input type="checkbox" id="subtitles" name="subtitles">
+              <input type="checkbox" id="subtitles" name="subtitles" checked>
               Include subtitles
             </label>
           </div>
@@ -345,13 +529,13 @@
       </div>
 
       <!-- Row 3: Requested By + Notes -->
-      <div class="grid">
+      <div class="grid form-row">
         <div class="field">
-          <label for="requested_by">Your Name <span style="font-weight:400;text-transform:none">(optional)</span></label>
+          <label for="requested_by">Your Name <span>(optional)</span></label>
           <input id="requested_by" name="requested_by" type="text" placeholder="e.g. Jesse">
         </div>
         <div class="field">
-          <label for="notes">Notes <span style="font-weight:400;text-transform:none">(optional)</span></label>
+          <label for="notes">Notes <span>(optional)</span></label>
           <input id="notes" name="notes" type="text" placeholder="e.g. director's cut, avoid dubbed">
         </div>
       </div>
@@ -369,10 +553,14 @@
   </div>
 
   <!-- Past requests -->
-  <div class="section-title">Past Requests</div>
+  <div class="section-header">
+    <h3>Past Requests</h3>
+    <div class="section-rule"></div>
+  </div>
 
   {% if requests %}
   <div class="card">
+    <!-- Desktop table -->
     <div class="table-wrap">
       <table>
         <thead>
@@ -413,21 +601,37 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Mobile card list -->
+    <div class="req-mobile-list">
+      {% for r in requests %}
+      <div class="req-mobile-item" onclick="openReqDetail({{ loop.index0 }})">
+        <div class="req-mobile-body">
+          <div class="req-mobile-title">{{ r.title }}</div>
+          <div class="req-mobile-meta">
+            <span class="req-mobile-type">{{ r.media_type }}</span>
+            <span class="badge s-{{ r.status }}">{{ r.status.replace('_', ' ') }}</span>
+          </div>
+        </div>
+        <div class="req-mobile-arrow">›</div>
+      </div>
+      {% endfor %}
+    </div>
   </div>
   {% else %}
   <div class="card">
     <div class="empty">
-      <svg width="56" height="64" viewBox="0 0 400 400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <svg class="empty-icon" width="60" height="68" viewBox="0 0 400 400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none">
         <path d="M132.094 229.262C127.676 229.257 124.09 232.835 124.085 237.253C124.08 241.672 127.658 245.257 132.076 245.262L132.094 229.262ZM246.632 240.03L251.335 233.558C251.017 233.327 250.682 233.119 250.334 232.938L246.632 240.03ZM132.084 343.907L126.811 349.923L126.811 349.923L132.084 343.907ZM131.257 256.153C131.831 251.772 128.745 247.756 124.365 247.182C119.984 246.607 115.967 249.694 115.393 254.074L131.257 256.153ZM241.929 246.501C241.629 246.283 242.356 246.77 243.425 249.491C244.385 251.934 245.291 255.321 246.039 259.535C247.529 267.932 248.237 278.708 247.929 289.782C247.621 300.868 246.306 311.877 243.935 320.799C241.436 330.203 238.237 335.465 235.538 337.363L244.743 350.451C252.372 345.085 256.746 334.892 259.398 324.908C262.179 314.443 263.592 302.133 263.923 290.226C264.254 278.308 263.511 266.419 261.793 256.739C260.936 251.913 259.798 247.408 258.316 243.638C256.944 240.146 254.831 236.099 251.335 233.558L241.929 246.501ZM235.538 337.363C231.908 339.916 224.946 342.278 215.224 343.878C205.786 345.431 194.725 346.116 183.743 345.984C172.759 345.852 162.101 344.904 153.472 343.293C149.155 342.487 145.491 341.541 142.615 340.513C139.616 339.441 138.017 338.469 137.357 337.891L126.811 349.923C129.671 352.43 133.444 354.227 137.23 355.58C141.14 356.977 145.676 358.114 150.535 359.021C160.261 360.837 171.864 361.842 183.551 361.983C195.241 362.124 207.263 361.403 217.822 359.665C228.096 357.975 238.045 355.161 244.743 350.451L235.538 337.363ZM137.357 337.891C135.91 336.623 133.966 333.326 132.337 326.984C130.788 320.957 129.816 313.37 129.345 304.996C128.402 288.271 129.509 269.496 131.257 256.153L115.393 254.074C113.537 268.236 112.363 288.02 113.37 305.896C113.873 314.823 114.934 323.547 116.84 330.965C118.665 338.07 121.596 345.353 126.811 349.923L137.357 337.891ZM132.076 245.262C137.516 245.268 146.405 244.843 156.591 244.375C166.903 243.902 178.791 243.371 190.57 243.13C202.376 242.89 213.904 242.945 223.506 243.618C228.308 243.954 232.496 244.437 235.925 245.078C239.461 245.74 241.712 246.486 242.93 247.122L250.334 232.938C247.052 231.225 242.999 230.124 238.867 229.351C234.627 228.558 229.782 228.018 224.625 227.657C214.311 226.934 202.226 226.889 190.244 227.134C178.236 227.379 166.161 227.919 155.857 228.392C145.429 228.871 137.051 229.268 132.094 229.262L132.076 245.262Z"
-              fill="#c8bfaa" fill-opacity="0.9"/>
-        <path d="M200 227C207.288 173.216 262.046 135.441 269 83" stroke="#7aab8a" stroke-opacity="0.6" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M174.928 231C181.253 205.545 157.22 179.327 164.329 161" stroke="#7aab8a" stroke-opacity="0.6" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M321 77.1535C216.523 72.7477 273.075 165.304 321 85.318" stroke="#4a7c59" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M198.277 125.937C300.467 88.895 237.443 216.377 187 130.853" stroke="#4a7c59" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M286 205.036C260.368 129.453 172.591 193.677 284.382 210" stroke="#4a7c59" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M165.611 104.912C113.787 149.387 203.085 232.192 167.26 92" stroke="#4a7c59" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M101.736 195.493C179.378 137.599 213.556 215 79 215" stroke="#4a7c59" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M244 50.9005C246.594 135.104 322.632 59.0688 245.606 46" stroke="#4a7c59" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+              fill="#9ea89a" fill-opacity="0.8"/>
+        <path d="M200 227C207.288 173.216 262.046 135.441 269 83" stroke="#5aaa72" stroke-opacity="0.55" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M174.928 231C181.253 205.545 157.22 179.327 164.329 161" stroke="#5aaa72" stroke-opacity="0.55" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M321 77.1535C216.523 72.7477 273.075 165.304 321 85.318" stroke="#3a7c52" stroke-opacity="0.8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M198.277 125.937C300.467 88.895 237.443 216.377 187 130.853" stroke="#3a7c52" stroke-opacity="0.8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M286 205.036C260.368 129.453 172.591 193.677 284.382 210" stroke="#3a7c52" stroke-opacity="0.8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M165.611 104.912C113.787 149.387 203.085 232.192 167.26 92" stroke="#3a7c52" stroke-opacity="0.8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M101.736 195.493C179.378 137.599 213.556 215 79 215" stroke="#3a7c52" stroke-opacity="0.8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M244 50.9005C246.594 135.104 322.632 59.0688 245.606 46" stroke="#3a7c52" stroke-opacity="0.8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       No requests yet — submit the first one above.
     </div>
@@ -436,7 +640,155 @@
 
 </div>
 
+<!-- Request detail sheet (mobile) -->
+<div id="req-detail-modal" class="req-sheet-backdrop" style="display:none">
+  <div class="req-sheet">
+    <span class="rmd-handle"></span>
+    <div class="rmd-header">
+      <div class="rmd-title" id="rmd-title-text"></div>
+      <button class="rmd-close" id="rmd-close">✕</button>
+    </div>
+    <div id="rmd-body"></div>
+  </div>
+</div>
+
 <script>
+  // ── Request data for mobile detail ────────────────────────────────────
+  const REQ_DATA = [
+    {% for r in requests %}
+    {
+      title:         {{ r.title | tojson }},
+      mediaType:     {{ r.media_type | tojson }},
+      quality:       {{ (r.quality if r.quality else '—') | tojson }},
+      audioLanguage: {{ (r.audio_language if r.audio_language else '—') | tojson }},
+      subtitles:     {{ r.subtitles | tojson }},
+      requestedBy:   {{ (r.requested_by if r.requested_by else '—') | tojson }},
+      date:          {{ r.date_requested | tojson }},
+      notes:         {{ (r.notes if r.notes else '—') | tojson }},
+      status:        {{ r.status | tojson }},
+    },
+    {% endfor %}
+  ];
+
+  function escH(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  let currentReqIdx = null;
+  const reqSheetEl  = document.querySelector('.req-sheet');
+
+  function populateReqDetail(idx) {
+    const d = REQ_DATA[idx];
+    if (!d) return;
+    currentReqIdx = idx;
+    document.getElementById('rmd-title-text').textContent = d.title;
+    const sc = 's-' + d.status;
+    const subsBadge = d.subtitles === 'yes' ? '<span class="badge-sm">yes</span>' : '—';
+    document.getElementById('rmd-body').innerHTML = `
+      <div class="rmd-row"><span class="rmd-label">Type</span>      <span class="rmd-val">${escH(d.mediaType)}</span></div>
+      <div class="rmd-row"><span class="rmd-label">Quality</span>   <span class="rmd-val">${escH(d.quality)}</span></div>
+      <div class="rmd-row"><span class="rmd-label">Audio</span>     <span class="rmd-val">${escH(d.audioLanguage)}</span></div>
+      <div class="rmd-row"><span class="rmd-label">Subtitles</span> <span class="rmd-val">${subsBadge}</span></div>
+      <div class="rmd-row"><span class="rmd-label">Requested by</span><span class="rmd-val">${escH(d.requestedBy)}</span></div>
+      <div class="rmd-row"><span class="rmd-label">Date</span>      <span class="rmd-val">${escH(d.date)}</span></div>
+      <div class="rmd-row"><span class="rmd-label">Notes</span>     <span class="rmd-val">${escH(d.notes)}</span></div>
+      <div class="rmd-row"><span class="rmd-label">Status</span>    <span class="rmd-val"><span class="badge ${escH(sc)}">${escH(d.status.replace('_',' '))}</span></span></div>
+    `;
+  }
+
+  function openReqDetail(idx) {
+    if (!REQ_DATA[idx]) return;
+    reqSheetEl.style.transform = '';
+    reqSheetEl.style.transition = '';
+    reqSheetEl.scrollTop = 0;
+    populateReqDetail(idx);
+    const modal = document.getElementById('req-detail-modal');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeReqDetail() {
+    document.getElementById('req-detail-modal').style.display = 'none';
+    currentReqIdx = null;
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('rmd-close').addEventListener('click', closeReqDetail);
+  document.getElementById('req-detail-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeReqDetail();
+  });
+
+  // ── Sheet swipe gestures ──────────────────────────────────────────────
+  let rStartX = 0, rStartY = 0, rType = null, rFromHandle = false;
+
+  reqSheetEl.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    rStartX = t.clientX;
+    rStartY = t.clientY;
+    rType = null;
+    rFromHandle = (t.clientY - reqSheetEl.getBoundingClientRect().top) < 52;
+    reqSheetEl.style.transition = 'none';
+  }, { passive: true });
+
+  reqSheetEl.addEventListener('touchmove', e => {
+    const dx = e.touches[0].clientX - rStartX;
+    const dy = e.touches[0].clientY - rStartY;
+    if (!rType) {
+      if (Math.abs(dx) > 7 || Math.abs(dy) > 7) {
+        rType = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
+      }
+      return;
+    }
+    if (rType === 'v') {
+      if (dy > 0 && (rFromHandle || reqSheetEl.scrollTop <= 2)) {
+        e.preventDefault();
+        reqSheetEl.style.transform = `translateY(${dy}px)`;
+      }
+    } else {
+      e.preventDefault();
+      reqSheetEl.style.transform = `translateX(${dx}px)`;
+    }
+  }, { passive: false });
+
+  reqSheetEl.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - rStartX;
+    const dy = e.changedTouches[0].clientY - rStartY;
+    if (rType === 'v' && dy > 88 && (rFromHandle || reqSheetEl.scrollTop <= 2)) {
+      reqSheetEl.style.transition = 'transform 0.22s ease-in';
+      reqSheetEl.style.transform = 'translateY(110%)';
+      setTimeout(() => { closeReqDetail(); reqSheetEl.style.transform = ''; reqSheetEl.style.transition = ''; }, 225);
+    } else if (rType === 'h' && Math.abs(dx) > 75) {
+      navigateReq(dx < 0 ? 1 : -1);
+    } else {
+      reqSheetEl.style.transition = 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      reqSheetEl.style.transform = '';
+      setTimeout(() => { reqSheetEl.style.transition = ''; }, 350);
+    }
+  }, { passive: true });
+
+  function navigateReq(dir) {
+    const next = currentReqIdx + dir;
+    if (next < 0 || next >= REQ_DATA.length) {
+      const bump = dir > 0 ? '-18px' : '18px';
+      reqSheetEl.style.transition = 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      reqSheetEl.style.transform = bump;
+      setTimeout(() => { reqSheetEl.style.transform = ''; setTimeout(() => { reqSheetEl.style.transition = ''; }, 350); }, 350);
+      return;
+    }
+    const exitX = dir > 0 ? '-110%' : '110%';
+    reqSheetEl.style.transition = 'transform 0.18s ease-in';
+    reqSheetEl.style.transform = `translateX(${exitX})`;
+    setTimeout(() => {
+      populateReqDetail(next);
+      reqSheetEl.scrollTop = 0;
+      reqSheetEl.style.transition = 'none';
+      reqSheetEl.style.transform = `translateX(${dir > 0 ? '110%' : '-110%'})`;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        reqSheetEl.style.transition = 'transform 0.22s ease-out';
+        reqSheetEl.style.transform = '';
+        setTimeout(() => { reqSheetEl.style.transition = ''; }, 225);
+      }));
+    }, 190);
+  }
+
   const QUALITY = {
     video:     ['any', '720p', '1080p', '1080p-HDR', '1440p', '2160p-4K', '2160p-4K-HDR'],
     music:     ['any', 'mp3-128k', 'mp3-192k', 'mp3-256k', 'mp3-320k',

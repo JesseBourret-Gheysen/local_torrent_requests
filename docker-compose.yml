@@ -2,8 +2,14 @@ services:
   torrentreq:
     build: ./app
     container_name: torrentreq
-    ports:
-      - "80:80"
+    expose:
+      - "80"
     volumes:
       - /home/jesse/docker/torrentreq/data:/data
+    networks:
+      - localweb
     restart: unless-stopped
+
+networks:
+  localweb:
+    external: true
