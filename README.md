@@ -81,6 +81,62 @@ docker logs -f dnsmasq_torrentreq
 
 ---
 
+## REST API
+
+All endpoints are under `/api/requests`. Responses are JSON. No authentication required (local network only).
+
+### CRUD
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/requests` | List all requests |
+| GET | `/api/requests/<id>` | Get a single request by ID |
+| POST | `/api/requests` | Create a new request |
+| PUT | `/api/requests/<id>` | Update an existing request |
+| DELETE | `/api/requests/<id>` | Delete a request (returns 204) |
+
+### Filtered GET endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/requests/media-type/<media_type>` | All requests matching a media type exactly (case-insensitive). e.g. `/api/requests/media-type/Movie` |
+| GET | `/api/requests/requester/<name>` | All requests from a specific person (exact match, case-insensitive). e.g. `/api/requests/requester/jesse` |
+| GET | `/api/requests/title/<query>` | All requests whose title contains the query string (case-insensitive substring). e.g. `/api/requests/title/dark knight` |
+
+### Request body fields (POST / PUT)
+
+| Field | Required | Notes |
+|-------|----------|-------|
+| `title` | Yes (POST) | Media title |
+| `media_type` | No | e.g. `Movie`, `TV`, `Other` (default: `Movie`) |
+| `quality` | No | e.g. `1080p`, `4K`, `any` (default: `any`) |
+| `audio_language` | No | e.g. `English` |
+| `subtitles` | No | `true`/`false` |
+| `requested_by` | No | Person's name |
+| `notes` | No | Additional notes |
+| `status` | No | `requested`, `in_progress`, `fulfilled`, `not_found` (default: `requested`) |
+
+### Response object
+
+```json
+{
+  "id": "a1b2c3d4",
+  "title": "The Dark Knight",
+  "media_type": "Movie",
+  "quality": "1080p",
+  "audio_language": "English",
+  "subtitles": "",
+  "requested_by": "jesse",
+  "notes": "",
+  "date_requested": "2026-04-07",
+  "status": "requested"
+}
+```
+
+`subtitles` is `"yes"` when requested, `""` when not.
+
+---
+
 ## Troubleshooting
 
 **Port 80 already in use**
